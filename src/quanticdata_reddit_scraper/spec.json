@@ -1,0 +1,159 @@
+{
+ "cli": "reddit-scraper",
+ "name": "Reddit Scraper",
+ "version": "0.1.0",
+ "description": "Reddit scraper for Python and the command line: public posts for a keyword, across Reddit or in one subreddit, with score and comment count, and the full comment tree of any post, as JSON or CSV. Free and open source; sign in with your QuanticData account, no Reddit API key, proxies or headless browser to run.",
+ "links": {
+  "repo": "https://github.com/quantumproxies/reddit-scraper",
+  "page": "https://quanticdata.io/collectors/reddit-scraper-api/?utm_source=github&utm_medium=cli&utm_campaign=reddit-scraper",
+  "billing": "https://app.quanticdata.io/billing?utm_source=github&utm_medium=cli&utm_campaign=reddit-scraper",
+  "pricing": "https://quanticdata.io/pricing/?utm_source=github&utm_medium=cli&utm_campaign=reddit-scraper"
+ },
+ "commands": [
+  {
+   "name": "posts",
+   "collector": "reddit_posts",
+   "method": "posts",
+   "help": "public Reddit posts for a keyword, optionally in one subreddit",
+   "description": "Public Reddit posts by search query and/or subreddit, with score and comments.",
+   "positional": "query",
+   "positional_is_list": false,
+   "positional_optional": true,
+   "columns": [
+    "rank",
+    "subreddit",
+    "title",
+    "score",
+    "comments",
+    "author",
+    "created_at"
+   ],
+   "sample": "reddit_posts",
+   "inputs": [
+    {
+     "name": "query",
+     "type": "string",
+     "required": false,
+     "description": "Keywords to search. Omit to list a subreddit instead.",
+     "arg": "query"
+    },
+    {
+     "name": "subreddit",
+     "type": "string",
+     "required": false,
+     "description": "Subreddit name, e.g. \"webscraping\" (with or without r/).",
+     "arg": "subreddit"
+    },
+    {
+     "name": "sort",
+     "type": "string",
+     "required": false,
+     "description": "Search: relevance | top | new | comments. Listing: hot | new | top | rising.",
+     "enum": [
+      "relevance",
+      "top",
+      "new",
+      "hot",
+      "rising",
+      "comments"
+     ],
+     "default": "relevance",
+     "arg": "sort"
+    },
+    {
+     "name": "time",
+     "type": "string",
+     "required": false,
+     "description": "Restrict to a period (search and top listings).",
+     "enum": [
+      "hour",
+      "day",
+      "week",
+      "month",
+      "year",
+      "all"
+     ],
+     "default": "all",
+     "arg": "time"
+    },
+    {
+     "name": "country",
+     "type": "string",
+     "required": false,
+     "description": "Country to run the request from, as an ISO 3166-1 alpha-2 code (us, gb, de...).",
+     "arg": "country"
+    },
+    {
+     "name": "max_results",
+     "type": "integer",
+     "required": false,
+     "description": "How many posts to deliver at most (1–250). You pay only for delivered posts.",
+     "min": 1,
+     "max": 250,
+     "default": 25,
+     "arg": "max_results"
+    }
+   ]
+  },
+  {
+   "name": "comments",
+   "collector": "reddit_comments",
+   "method": "comments",
+   "help": "the comment tree of one public post",
+   "description": "The comment tree of any public Reddit post — author, score, depth, timestamps.",
+   "positional": "post",
+   "positional_is_list": false,
+   "positional_optional": false,
+   "columns": [
+    "rank",
+    "depth",
+    "author",
+    "score",
+    "created_at",
+    "body"
+   ],
+   "sample": "reddit_comments",
+   "inputs": [
+    {
+     "name": "post",
+     "type": "string",
+     "required": true,
+     "description": "Post URL or id, e.g. https://www.reddit.com/r/pics/comments/92dd8/… or 92dd8.",
+     "arg": "post"
+    },
+    {
+     "name": "sort",
+     "type": "string",
+     "required": false,
+     "description": "Comment order (default top).",
+     "enum": [
+      "top",
+      "new",
+      "controversial",
+      "old",
+      "qa"
+     ],
+     "default": "top",
+     "arg": "sort"
+    },
+    {
+     "name": "country",
+     "type": "string",
+     "required": false,
+     "description": "Country to run the request from, as an ISO 3166-1 alpha-2 code (us, gb, de...).",
+     "arg": "country"
+    },
+    {
+     "name": "max_results",
+     "type": "integer",
+     "required": false,
+     "description": "How many comments to deliver at most (1–200). You pay only for delivered comments.",
+     "min": 1,
+     "max": 200,
+     "default": 50,
+     "arg": "max_results"
+    }
+   ]
+  }
+ ]
+}
